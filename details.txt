@@ -1,0 +1,17 @@
+# Go up one level to your main root directory
+cd ..
+
+# Create a folder for your backend and enter it
+mkdir backend
+cd backend
+# Initialize npm with default settings
+npm init -y
+
+# Install production dependencies
+npm install express mongoose cors dotenv
+
+# Install development tool for automatic server restarts
+npm install --save-dev nodemon
+
+
+
