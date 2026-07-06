@@ -59,3 +59,17 @@ npm install multer
 Open your backend/package.json file and add "type": "module" right near the top:
 node server.js
 
+https://newssphere-491f5.web.app/
+firebase deploy --only hosting
+
+# 1. Move into your frontend folder
+cd frontend
+
+# 2. Build your actual React project assets
+npm run build
+
+# 3. Move back out to the root folder where firebase.json lives
+cd ..
+
+# 4. Deploy your real application code
+firebase deploy --only hosting

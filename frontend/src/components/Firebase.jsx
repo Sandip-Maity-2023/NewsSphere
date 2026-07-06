@@ -3,13 +3,22 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+// const firebaseConfig = {
+//   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+//   authDomain: "login-auth-b193f.firebaseapp.com",
+//   projectId: "login-auth-b193f",
+//   storageBucket: "login-auth-b193f.firebasestorage.app",
+//   messagingSenderId: "613634565446",
+//   appId: "1:613634565446:web:20c3eaa6ce4cf3e68eb147",
+// };
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "login-auth-b193f.firebaseapp.com",
-  projectId: "login-auth-b193f",
-  storageBucket: "login-auth-b193f.firebasestorage.app",
-  messagingSenderId: "613634565446",
-  appId: "1:613634565446:web:20c3eaa6ce4cf3e68eb147",
+  authDomain: "news-879ae.firebaseapp.com",
+  projectId: "news-879ae",
+  storageBucket: "news-879ae.firebasestorage.app",
+  messagingSenderId: "1023724024886",
+  appId: "1:1023724024886:web:a7dc0b5b877dd302f05497"
 };
 
 // Initialize Firebase
