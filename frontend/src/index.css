@@ -89,3 +89,7 @@ html,
     margin-top: 1rem;
     text-align: center;
 }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
