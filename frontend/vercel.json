@@ -4,6 +4,14 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/api/posts",
+      "destination": "https://newssphere-ha7q.onrender.com/api/posts"
+    },
+    {
+      "source": "/api/posts/(.*)",
+      "destination": "https://newssphere-ha7q.onrender.com/api/posts/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

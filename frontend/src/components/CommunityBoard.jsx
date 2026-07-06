@@ -776,7 +776,7 @@ const normalizeBase = (raw) => {
   return `http://${trimmed.replace(/\/$/, "")}`;
 };
 
-const API_BASE = normalizeBase(rawApiBase);
+const API_BASE = import.meta.env.PROD ? "" : normalizeBase(rawApiBase);
 
 const emptyComposer = {
   title: "",
