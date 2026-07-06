@@ -13,5 +13,44 @@ npm install express mongoose cors dotenv
 # Install development tool for automatic server restarts
 npm install --save-dev nodemon
 
+frontend:
+Using npm: npm install bootstrap
 
+
+backend:
+
+
+root:
+git remote -v
+git fetch origin
+git push -u origin main
+
+frontend:
+npm install react-toastify
+npm install firebase @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/free-brands-svg-icons
+
+
+backend:
+npm install axios
+npm install nodemailer dotenv cors express
+npm install node-cron jsonwebtoken bcryptjs mongoose
+npm install multer
+
+├── src/
+│   ├── config/
+│   │   ├── db.js          // MongoDB connection logic
+│   │   └── mailer.js      // Nodemailer setup
+│   ├── controllers/
+│   │   ├── postController.js // Request/response logic for posts
+│   │   └── newsController.js // Request/response logic for newsletter
+│   ├── services/
+│   │   ├── groqService.js // Groq API integrations
+│   │   └─ newsService.js // NewsAPI integrations + Email builder
+│   ├── cron/
+│   │   └── newsletterCron.js // node-cron schedule setup
+│   └── app.js             // Express App initialization & routes
+└── server.js              // Entry point (starts the server)
+
+Open your backend/package.json file and add "type": "module" right near the top:
+node server.js
 
