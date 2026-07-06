@@ -1,5 +1,5 @@
 // Profile.jsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db } from "./Firebase";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -10,7 +10,8 @@ function Profile() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        window.location.href = "/login";
+        setUserDetails(null);
+        setLoading(false);
         return;
       }
 
@@ -31,10 +32,11 @@ function Profile() {
 
   const logout = async () => {
     await auth.signOut();
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
+  if (!userDetails) return null;
 
   return (
     <div style={styles.container}>

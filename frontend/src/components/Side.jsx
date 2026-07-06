@@ -11,7 +11,6 @@ import {
   faVideo,
   faList,
 } from "@fortawesome/free-solid-svg-icons";
-import Profile from "./Profile";
 
 
 const Sidebar = ({ onToggle }) => {
@@ -117,7 +116,6 @@ const Sidebar = ({ onToggle }) => {
             </li>
             
           ))}
-          <Profile/>
         </ul>
       </div>
 

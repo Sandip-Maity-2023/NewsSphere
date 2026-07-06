@@ -124,10 +124,16 @@ import Footer from "./components/Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [activeView, setActiveView] = useState("news");
+
+  useEffect(() => {
+    if (window.location.pathname === "/login") {
+      window.history.replaceState(null, "", "/");
+    }
+  }, []);
 
   // Providing a clean placeholder layout context to keep the underlying components happy
   const mockUser = {

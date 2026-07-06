@@ -817,8 +817,12 @@ const CommunityBoard = ({ user }) => {
     if (mounted) {
       loadPosts();
     }
+    const refreshId = window.setInterval(() => {
+      loadPosts();
+    }, 15000);
     return () => {
       mounted = false;
+      window.clearInterval(refreshId);
     };
   }, []);
 
