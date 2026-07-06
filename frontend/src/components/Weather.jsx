@@ -1,41 +1,43 @@
 // WeatherWidget.jsx
 import { useCallback, useEffect, useState } from "react";
 
+const rawApiBase = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+
+const normalizeBase = (raw) => {
+  const trimmed = String(raw || "").trim();
+  if (!trimmed) return "http://localhost:8000";
+  if (trimmed.startsWith(":")) return `http://localhost${trimmed}`;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed.replace(/\/$/, "");
+  return `http://${trimmed.replace(/\/$/, "")}`;
+};
+
+const API_BASE = normalizeBase(rawApiBase);
+
 const WeatherWidget = ({ city = "Delhi" }) => {
   const [expanded, setExpanded] = useState(false);
   const [weather, setWeather] = useState(null);
 
-  const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-
   const fetchWeather = useCallback(async () => {
     try {
       const weatherRes = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${WEATHER_API_KEY}`
+        `${API_BASE}/api/weather?city=${encodeURIComponent(city)}`
       );
       const weatherData = await weatherRes.json();
 
-      const { lat, lon } = weatherData.coord;
-
-      const aqiRes = await fetch(
-        `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}`
-      );
-      const aqiData = await aqiRes.json();
-
-      const timeRes = await fetch(
-        "https://worldtimeapi.org/api/timezone/Asia/Kolkata"
-      );
-      const timeData = await timeRes.json();
+      if (!weatherRes.ok) {
+        throw new Error(weatherData.error || "Weather fetch failed");
+      }
 
       setWeather({
-        temp: weatherData.main.temp,
-        desc: weatherData.weather[0].description,
-        aqi: aqiData.list[0].main.aqi,
-        time: timeData.datetime,
+        temp: weatherData.temp,
+        desc: weatherData.desc,
+        aqi: weatherData.aqi,
+        time: weatherData.time,
       });
     } catch (err) {
       console.log("Weather fetch failed:", err);
     }
-  }, [WEATHER_API_KEY, city]);
+  }, [city]);
 
   useEffect(() => {
     fetchWeather();

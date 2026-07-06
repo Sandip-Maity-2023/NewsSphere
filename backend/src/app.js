@@ -15,9 +15,25 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
+const allowedOrigins = new Set(
+  [
+    process.env.FRONTEND_URL,
+    "https://frontend-five-murex-54.vercel.app",
+    "https://frontend-iruo5rfmm-sandip-maity-2023s-projects.vercel.app",
+    "http://localhost:5173",
+  ].filter(Boolean),
+);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "*",
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   }),
 );
@@ -34,6 +50,8 @@ app.delete("/api/posts/:id", postCtrl.deletePost);
 app.get("/", (_req, res) => {
   res.send("Welcome to the NewsSphere API!");
 });
+app.get("/api/news", newsCtrl.getNews);
+app.get("/api/weather", newsCtrl.getWeather);
 app.post("/setup-news-email", newsCtrl.setupNewsEmail);
 
 app.get("/health", async (_req, res) => {

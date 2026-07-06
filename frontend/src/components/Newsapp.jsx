@@ -14,6 +14,18 @@ const categories = [
   "technology",
 ];
 
+const rawApiBase = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+
+const normalizeBase = (raw) => {
+  const trimmed = String(raw || "").trim();
+  if (!trimmed) return "http://localhost:8000";
+  if (trimmed.startsWith(":")) return `http://localhost${trimmed}`;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed.replace(/\/$/, "");
+  return `http://${trimmed.replace(/\/$/, "")}`;
+};
+
+const API_BASE = normalizeBase(rawApiBase);
+
 const Newsapp = () => {
   const [search, setSearch] = useState("india");
   const [newsData, setNewsData] = useState([]);
@@ -21,8 +33,6 @@ const Newsapp = () => {
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
-
-  const apiKey = import.meta.env.VITE_NEWS_API_KEY;
 
   const updateCategoryPreference = (category) => {
     const data = JSON.parse(localStorage.getItem("userPrefs")) || {
@@ -54,25 +64,18 @@ const Newsapp = () => {
   };
 
   const getData = useCallback(async (query = search) => {
-    if (!apiKey) {
-      setError("Missing VITE_NEWS_API_KEY.");
-      return;
-    }
-
     setLoading(true);
     try {
       const response = await fetch(
-        `https://newsapi.org/v2/everything?q=${encodeURIComponent(
-          query
-        )}&language=en&pageSize=50&apiKey=${apiKey}`
+        `${API_BASE}/api/news?q=${encodeURIComponent(query)}`
       );
       const jsonData = await response.json();
 
-      if (jsonData.status === "ok") {
+      if (response.ok && jsonData.status === "ok") {
         setNewsData(jsonData.articles || []);
         setError(null);
       } else {
-        throw new Error(jsonData.message || "Failed to fetch news");
+        throw new Error(jsonData.error || jsonData.message || "Failed to fetch news");
       }
     } catch (fetchError) {
       setError(fetchError.message);
@@ -80,7 +83,7 @@ const Newsapp = () => {
     } finally {
       setLoading(false);
     }
-  }, [apiKey, search]);
+  }, [search]);
 
   useEffect(() => {
     getData("india");
