@@ -35,11 +35,61 @@ export const getPosts = async (_req, res) => {
   }
 };
 
+// export const createPost = async (req, res) => {
+//   try {
+//     const { title, content, mediaType = "text", mediaUrl = "", mediaName = "", authorId = "", authorName = "Anonymous", authorEmail = "" } = req.body || {};
+//     const trimmedTitle = String(title || "").trim();
+//     const trimmedContent = String(content || "").trim();
+
+//     if (!trimmedTitle && !trimmedContent && !mediaUrl) {
+//       return res.status(400).json({ error: "Add text, image, or video before posting." });
+//     }
+
+//     const createdAt = new Date().toISOString();
+//     const postDocument = {
+//       title: trimmedTitle,
+//       content: trimmedContent,
+//       mediaType,
+//       mediaUrl,
+//       mediaName,
+//       authorId,
+//       authorName,
+//       authorEmail,
+//       likes: 0,
+//       comments: [],
+//       createdAt,
+//       updatedAt: createdAt,
+//     };
+
+//     const collection = await getCollection();
+//     if (!collection) {
+//       const savedMemoryPost = { ...postDocument, _id: randomUUID() };
+//       memoryPosts.unshift(savedMemoryPost);
+//       return res.status(201).json(toPublicPost(savedMemoryPost));
+//     }
+
+//     const result = await collection.insertOne(postDocument);
+//     res.status(201).json(toPublicPost({ ...postDocument, _id: result.insertedId }));
+//   } catch (error) {
+//     res.status(500).json({ error: "Unable to create post." });
+//   }
+// };
+// //const Post = require('../models/Post');
+
 export const createPost = async (req, res) => {
   try {
-    const { title, content, mediaType = "text", mediaUrl = "", mediaName = "", authorId = "", authorName = "Anonymous", authorEmail = "" } = req.body || {};
+    const { title, content, mediaType = "text", authorId = "", authorName = "Anonymous", authorEmail = "" } = req.body || {};
     const trimmedTitle = String(title || "").trim();
     const trimmedContent = String(content || "").trim();
+
+    let mediaUrl = "";
+    let mediaName = req.file?.originalname || "";
+
+    // If a file was streamed by multer, handle its binary buffer array
+    if (req.file) {
+      const base64Data = req.file.buffer.toString("base64");
+      mediaUrl = `data:${req.file.mimetype};base64,${base64Data}`;
+    }
 
     if (!trimmedTitle && !trimmedContent && !mediaUrl) {
       return res.status(400).json({ error: "Add text, image, or video before posting." });
@@ -62,16 +112,20 @@ export const createPost = async (req, res) => {
     };
 
     const collection = await getCollection();
+    
+    // In-memory array fallback if MongoDB is not connected
     if (!collection) {
       const savedMemoryPost = { ...postDocument, _id: randomUUID() };
       memoryPosts.unshift(savedMemoryPost);
       return res.status(201).json(toPublicPost(savedMemoryPost));
     }
 
+    // Standard MongoDB path
     const result = await collection.insertOne(postDocument);
     res.status(201).json(toPublicPost({ ...postDocument, _id: result.insertedId }));
+
   } catch (error) {
-    res.status(500).json({ error: "Unable to create post." });
+    res.status(500).json({ error: "Server failed to process file stream and create post." });
   }
 };
 

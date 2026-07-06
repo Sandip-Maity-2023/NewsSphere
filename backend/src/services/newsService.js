@@ -1,7 +1,7 @@
 import axios from "axios";
 import { userPreferences } from "../config/db.js";
 import { transporter } from "../config/mailer.js";
-import { groqSummary } from "./groqService.js";
+import { groqSummary } from "./groq.js";
 
 const buildNewsletterHTML = (articles) => `
   <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">

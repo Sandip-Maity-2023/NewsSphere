@@ -28,7 +28,7 @@ export const getCollection =async()=> {
 
             await postsCollection.createIndex({createdAt:-1});
             await postsCollection.createIndex({authorId:-1});
-            console.log(`Connected to MongoDB database "${MONGODB_DB}"`);
+            console.log(`Connected to MongoDB database "${DB}"`);
         } catch (error) {
             console.error(`Error connecting to MongoDB: ${error}`);
             mongoClient=null;
