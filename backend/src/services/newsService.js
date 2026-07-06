@@ -22,7 +22,7 @@ export const sendDailyEmail = async (email) => {
     const prefs = userPreferences[email];
     if (!prefs || !Array.isArray(prefs.categories) || !prefs.categories.length) return;
 
-    const API_KEY = process.env.NEWS_KEY;
+    const API_KEY = process.env.NEWS_KEY || process.env.NEWS_API_KEY;
     
     // Concurrently fetch raw articles from across all requested categories
     const fetchPromises = prefs.categories.map(async (category) => {

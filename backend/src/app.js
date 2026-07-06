@@ -10,6 +10,10 @@ dotenv.config();
 
 const app = express();
 app.set("trust proxy", 1);
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 
 app.use(
   cors({
@@ -23,7 +27,7 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 
 // --- API Router Mapping Endpoints ---
 app.get("/api/posts", postCtrl.getPosts);
-app.post("/api/posts", postCtrl.createPost);
+app.post("/api/posts", upload.single("media"), postCtrl.createPost);
 app.post("/api/posts/:id/like", postCtrl.likePost);
 app.post("/api/posts/:id/comments", postCtrl.commentPost);
 app.delete("/api/posts/:id", postCtrl.deletePost);

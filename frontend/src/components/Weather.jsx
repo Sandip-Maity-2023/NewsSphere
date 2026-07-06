@@ -1,5 +1,5 @@
 // WeatherWidget.jsx
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const WeatherWidget = ({ city = "Delhi" }) => {
   const [expanded, setExpanded] = useState(false);
@@ -7,7 +7,7 @@ const WeatherWidget = ({ city = "Delhi" }) => {
 
   const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-  const fetchWeather = async () => {
+  const fetchWeather = useCallback(async () => {
     try {
       const weatherRes = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${WEATHER_API_KEY}`
@@ -35,11 +35,11 @@ const WeatherWidget = ({ city = "Delhi" }) => {
     } catch (err) {
       console.log("Weather fetch failed:", err);
     }
-  };
+  }, [WEATHER_API_KEY, city]);
 
   useEffect(() => {
     fetchWeather();
-  }, []);
+  }, [fetchWeather]);
 
   if (!weather)
   return (

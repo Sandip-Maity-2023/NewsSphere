@@ -805,7 +805,6 @@ const CommunityBoard = ({ user }) => {
   const [error, setError] = useState("");
   const [composerOpen, setComposerOpen] = useState(false);
   const [composer, setComposer] = useState(emptyComposer);
-  const [fileUploading, setFileUploading] = useState(false);
   const [commentDrafts, setCommentDrafts] = useState({});
 
   const authorName = useMemo(
@@ -911,9 +910,6 @@ const fetchWithTimeout = async (url, options = {}, timeout = 15000) => {
       ...options,
       signal: controller.signal,
     });
-  } catch (error) {
-    // Handle or pass the error along
-    throw error;
   } finally {
     clearTimeout(timeoutId);
   }
@@ -1107,7 +1103,7 @@ const fetchWithTimeout = async (url, options = {}, timeout = 15000) => {
               </div>
 
               <label style={uploadLabelStyle}>
-                {fileUploading ? "Processing file..." : "Upload image or video"}
+                Upload image or video
                 <input type="file" accept="image/*,video/*" onChange={handleFileChange} style={{ display: "block", marginTop: "10px" }} />
               </label>
 
@@ -1122,7 +1118,7 @@ const fetchWithTimeout = async (url, options = {}, timeout = 15000) => {
                 </div>
               )}
 
-              <button type="submit" disabled={loading || fileUploading} style={{ ...submitButtonStyle, opacity: loading || fileUploading ? 0.7 : 1, cursor: loading || fileUploading ? "not-allowed" : "pointer" }}>
+              <button type="submit" disabled={loading} style={{ ...submitButtonStyle, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
                 {loading ? "Publishing..." : "Publish Post"}
               </button>
             </div>

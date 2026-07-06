@@ -1,11 +1,10 @@
 // EditProfile.jsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db } from "./Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 
 function EditProfile() {
-  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [firstName, setFirstName] = useState("");
@@ -22,7 +21,6 @@ function EditProfile() {
 
       if (snap.exists()) {
         const data = snap.data();
-        setUserData(data);
         setFirstName(data.firstName || "");
         setAge(data.age || "");
         setPreferences(data.preferences?.join(", ") || "");

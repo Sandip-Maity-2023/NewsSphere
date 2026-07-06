@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Card from "./Card";
 import Sidebar from "./Side";
 import ChatbotButton from "./ChatbotButton";
@@ -53,7 +53,7 @@ const Newsapp = () => {
     );
   };
 
-  const getData = async (query = search) => {
+  const getData = useCallback(async (query = search) => {
     if (!apiKey) {
       setError("Missing VITE_NEWS_API_KEY.");
       return;
@@ -80,11 +80,11 @@ const Newsapp = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiKey, search]);
 
   useEffect(() => {
     getData("india");
-  }, []);
+  }, [getData]);
 
   const handleCategoryClick = (category) => {
     setSearch(category);

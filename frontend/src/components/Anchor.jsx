@@ -1,6 +1,6 @@
 
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import happy from "../assets/happy.png";
 import sad from "../assets/sad.png";
 import neutral from "../assets/neutral.png";
