@@ -25,6 +25,11 @@ git remote -v
 git fetch origin
 git push -u origin main
 
+npm install -g firebase-tools
+
+firebase login
+firebase init
+
 frontend:
 npm install react-toastify
 npm install firebase @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/free-brands-svg-icons
